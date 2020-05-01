@@ -17,7 +17,8 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-sass": "^3.0.2",
     "node-sass": "^4.9.4",
-    "phantomjs-prebuilt": "^2.1.16"
+    "phantomjs-prebuilt": "^2.1.16",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "grunt": "^1.0.3",
@@ -29,5 +30,10 @@
     "grunt-contrib-nodeunit": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-html2js": "^0.5.1"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
