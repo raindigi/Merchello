@@ -1812,14 +1812,21 @@
         protected override ProductDisplay GetDisplayObject(Guid key)
         {
             var criteria = SearchProvider.CreateSearchCriteria();
-            criteria.Field(KeyFieldInIndex, key.ToString()).And().Field("master", "True");
+            criteria.Field(KeyFieldInIndex, key.ToString());
+            var allProducts = SearchProvider.Search(criteria).ToArray();
 
-            var display = SearchProvider.Search(criteria).Select(PerformMapSearchResultToDisplayObject).FirstOrDefault();
-
-            if (display != null)
+            var defaultProduct = allProducts.FirstOrDefault(x => x.Fields["master"] == "True");
+            if (defaultProduct != null)
             {
-                display.EnsureValueConversion(this._conversionType);
-                return display;
+                // Get the variant 
+                var display = this.ModifyData(defaultProduct.ToProductDisplay(GetVariantsByProduct(allProducts), this._conversionType));
+
+                if (display != null)
+                {
+                    display.EnsureValueConversion(this._conversionType);
+                    return display;
+                }
+
             }
 
             var entity = Service.GetByKey(key);
@@ -1843,6 +1850,16 @@
         protected override ProductDisplay PerformMapSearchResultToDisplayObject(SearchResult result)
         {
             return this.ModifyData(result.ToProductDisplay(GetVariantsByProduct, this._conversionType));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ProductVariantDisplay"/> for a product
+        /// </summary>
+        /// <param name="searchResults"></param>
+        /// <returns></returns>
+        private IEnumerable<ProductVariantDisplay> GetVariantsByProduct(IEnumerable<SearchResult> searchResults)
+        {
+            return searchResults.Where(x => x.Fields["master"] != "True").Select(x => ModifyData(x.ToProductVariantDisplay()));
         }
 
         /// <summary>

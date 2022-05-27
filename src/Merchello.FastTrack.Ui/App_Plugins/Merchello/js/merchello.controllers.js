@@ -1,6 +1,6 @@
 /*! Merchello
  * https://github.com/meritage/Merchello
- * Copyright (c) 2019 Across the Pond, LLC.
+ * Copyright (c) 2021 Across the Pond, LLC.
  * Licensed MIT
  */
 
@@ -806,7 +806,10 @@ angular.module('merchello').controller('Merchello.Common.Dialogs.DateRangeSelect
                 // initial settings use standard
                 $scope.rangeStart = $filter('date')(start, $scope.settings.dateFormat);
                 $scope.rangeEnd = $filter('date')(end, $scope.settings.dateFormat);
-                $scope.showPreDeterminedDates = showPreDeterminedDates;
+                if ($scope.dialogData.showPreDeterminedDates) {
+                    $scope.showPreDeterminedDates = $scope.dialogData.showPreDeterminedDates;
+                }
+
 
                 setupDatePicker("#filterStartDate", $scope.rangeStart);
                 $element.find("#filterStartDate").datetimepicker().on("changeDate", applyDateStart);
@@ -9786,14 +9789,14 @@ angular.module('merchello').controller('Merchello.Backoffice.Reports.AbandonedBa
     function($scope, merchelloTabsFactory) {
 
         $scope.loaded = false;
-        $scope.tabs = [];
+        //$scope.tabs = [];
 
         var graphLoaded = false;
         var basketsLoaded = false;
 
         function init() {
-            $scope.tabs = merchelloTabsFactory.createReportsTabs();
-            $scope.tabs.setActive('abandonedBasket');
+            //$scope.tabs = merchelloTabsFactory.createReportsTabs();
+            //$scope.tabs.setActive('abandonedBasket');
             $scope.loaded = true;
 
         }
@@ -11098,10 +11101,10 @@ angular.module('merchello').controller('Merchello.Backoffice.OrderShipmentsContr
         ['$scope', '$routeParams', '$timeout', '$log', '$location', 'assetsService', 'dialogService', 'localizationService', 'notificationsService', 'invoiceHelper',
             'auditLogResource', 'noteResource', 'invoiceResource', 'settingsResource', 'paymentResource', 'shipmentResource', 'paymentGatewayProviderResource',
             'orderResource', 'dialogDataFactory', 'merchelloTabsFactory', 'addressDisplayBuilder', 'countryDisplayBuilder', 'salesHistoryDisplayBuilder', 'noteDisplayBuilder',
-            'invoiceDisplayBuilder', 'paymentDisplayBuilder', 'paymentMethodDisplayBuilder', 'shipMethodsQueryDisplayBuilder', 'noteDisplayBuilder',
+            'invoiceDisplayBuilder', 'paymentDisplayBuilder', 'paymentMethodDisplayBuilder', 'shipMethodsQueryDisplayBuilder',
         function($scope, $routeParams, $timeout, $log, $location, assetsService, dialogService, localizationService, notificationsService, invoiceHelper,
                  auditLogResource, noteResource, invoiceResource, settingsResource, paymentResource, shipmentResource, paymentGatewayProviderResource, orderResource, dialogDataFactory,
-                 merchelloTabsFactory, addressDisplayBuilder, countryDisplayBuilder, salesHistoryDisplayBuilder, noteDisplayBuilder, invoiceDisplayBuilder, paymentDisplayBuilder, paymentMethodDisplayBuilder, shipMethodsQueryDisplayBuilder, noteDisplayBuilder) {
+                 merchelloTabsFactory, addressDisplayBuilder, countryDisplayBuilder, salesHistoryDisplayBuilder, noteDisplayBuilder, invoiceDisplayBuilder, paymentDisplayBuilder, paymentMethodDisplayBuilder, shipMethodsQueryDisplayBuilder) {
 
             // exposed properties
             $scope.loaded = false;
@@ -11890,6 +11893,11 @@ angular.module('merchello').controller('Merchello.Backoffice.SalesListController
                         //cssClass = 'label-success';
                         icon = 'icon-truck';
                         text = fulfilled;
+                        break;
+                    case 'Ordered':
+                        //cssClass = 'label-success';
+                        icon = 'icon-thumb-up';
+                        text = 'Ordered';
                         break;
                     case 'Open':
                         //cssClass = 'label-default';
