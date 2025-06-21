@@ -14,9 +14,9 @@
     "node": ">= 0.8.4"
   },
   "dependencies": {
-    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-sass": "^2.0.0",
     "grunt-sass": "^3.0.2",
-    "node-sass": "^4.9.4",
+    "node-sass": "^9.0.0",
     "phantomjs-prebuilt": "^2.1.16"
   },
   "devDependencies": {
